@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Instagram Faceless Content Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen gradient-bg text-white p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- Header -->
+        <div class="text-center mb-12 fade-in">
+            <h1 class="text-4xl md:text-6xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+                📱 Faceless IG Generator
+            </h1>
+            <p class="text-xl md:text-2xl opacity-90 mb-8">Generate 30 days of viral faceless Instagram content in 1 click</p>
+        </div>
+
+        <!-- Niche Selector -->
+        <div class="glass rounded-3xl p-8 mb-12 fade-in">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="motivation">
+                    <i class="fas fa-fire text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Motivation</h3>
+                    <p class="text-sm opacity-75">Daily quotes & mindset</p>
+                </div>
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="fitness">
+                    <i class="fas fa-dumbbell text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Fitness</h3>
+                    <p class="text-sm opacity-75">Workout tips & plans</p>
+                </div>
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="finance">
+                    <i class="fas fa-dollar-sign text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Finance</h3>
+                    <p class="text-sm opacity-75">Money tips & hacks</p>
+                </div>
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="productivity">
+                    <i class="fas fa-clock text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Productivity</h3>
+                    <p class="text-sm opacity-75">Time management</p>
+                </div>
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="recipes">
+                    <i class="fas fa-utensils text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Recipes</h3>
+                    <p class="text-sm opacity-75">Quick & easy meals</p>
+                </div>
+                <div class="niche-card p-6 rounded-2xl border-2 border-white/20 hover:border-white/50 transition-all cursor-pointer group" data-niche="travel">
+                    <i class="fas fa-plane text-3xl mb-4 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-xl font-semibold mb-2">Travel</h3>
+                    <p class="text-sm opacity-75">Hidden gems & tips</p>
+                </div>
+            </div>
+            
+            <!-- Custom Niche Input -->
+            <div class="border-2 border-dashed border-white/30 rounded-2xl p-6 text-center">
+                <input type="text" id="customNiche" placeholder="Or type your own niche..." 
+                       class="w-full bg-transparent border-none text-xl text-center outline-none placeholder-white/60 focus:placeholder-transparent">
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="text-center mb-12 fade-in">
+            <button id="generateBtn" class="glass px-12 py-6 rounded-3xl text-2xl font-semibold hover:scale-105 transition-all duration-300 shadow-2xl hover:shadow-purple-500/25">
+                <i class="fas fa-magic mr-3"></i>Generate 30-Day Plan
+            </button>
+        </div>
+
+        <!-- Loading -->
+        <div id="loading" class="hidden text-center mb-12 fade-in">
+            <div class="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p class="text-xl">Crafting your viral content calendar...</p>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="hidden space-y-6">
+            <!-- Calendar Header -->
+            <div class="glass rounded-3xl p-8 text-center">
+                <h2 id="calendarTitle" class="text-3xl font-bold mb-4"></h2>
+                <div class="flex justify-center items-center space-x-4 text-sm opacity-75">
+                    <span><i class="fas fa-calendar-days mr-2"></i>30-Day Content Calendar</span>
+                    <span id="nicheDisplay" class="bg-white/20 px-4 py-2 rounded-full"></span>
+                </div>
+            </div>
+
+            <!-- Days Grid -->
+            <div id="daysGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+            <!-- Export Buttons -->
+            <div class="text-center">
+                <button id="exportPDF" class="glass px-8 py-4 rounded-2xl font-semibold mr-4 hover:scale-105 transition-all">
+                    <i class="fas fa-file-pdf mr-2"></i>Download PDF
+                </button>
+                <button id="exportCSV" class="glass px-8 py-4 rounded-2xl font-semibold mr-4 hover:scale-105 transition-all">
+                    <i class="fas fa-file-csv mr-2"></i>Export CSV
+                </button>
+                <button id="copyAll" class="glass px-8 py-4 rounded-2xl font-semibold hover:scale-105 transition-all">
+                    <i class="fas fa-copy mr-2"></i>Copy All
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <script>
+        // Content Templates by Niche
+        const templates = {
+            motivation: [
+                { type: 'quote', visual: 'minimalist text overlay', caption: '“The only limit is your mind” #mindset', hook: 'Daily Reminder' },
+                { type: 'statistic', visual: 'bold numbers', caption: '95% fail because they quit too early', hook: 'Shocking Stat' },
+                { type: 'question', visual: 'thought bubble', caption: 'What’s holding you back?', hook: 'Deep Question' },
+                // ... 27 more
+                { type: 'quote', visual: 'golden hour aesthetic', caption: '“Discipline > Motivation” #success', hook: 'Day 30' }
+            ],
+            fitness: [
+                { type: 'workout', visual: 'animated workout graphic', caption: '5 min abs burner 🔥', hook: 'Quick Win' },
+                { type: 'transformation', visual: 'before/after slider', caption: 'Week 1 progress', hook: 'Progress' },
+                // ... 28 more
+            ],
+            finance: [
+                { type: 'tip', visual: 'money growing animation', caption: 'Save $1000 this month', hook: 'Money Hack' },
+                { type: 'myth', visual: 'busted stamp', caption: 'Rich people don’t... ❌', hook: 'Myth Busted' },
+                // ... 28 more
+            ],
+            productivity: [
+                { type: 'hack', visual: '2-minute rule graphic', caption: 'Beat procrastination now', hook: 'Pro Tip' },
+                { type: 'routine', visual: 'perfect day timeline', caption: 'Elon’s morning routine', hook: 'Routine' },
+                // ... 28 more
+            ],
+            recipes: [
+                { type: 'recipe', visual: 'ingredients overlay', caption: '3-ingredient dinner', hook: 'Easy Recipe' },
+                { type: 'hack', visual: 'cooking trick', caption: 'Perfect rice every time', hook: 'Kitchen Hack' },
+                // ... 28 more
+            ],
+            travel: [
+                { type: 'hidden gem', visual: 'secret spot photo', caption: 'Locals only beach', hook: 'Secret Spot' },
+                { type: 'packing', visual: 'capsule wardrobe', caption: '7 days, 1 carry-on', hook: 'Packing Hack' },
+                // ... 28 more
+            ]
+        };
+
+        // Initialize
+        let selectedNiche = 'motivation';
+        let generatedContent = [];
+
+        // Niche Selection
+        document.querySelectorAll('.niche-card').forEach(card => {
+            card.addEventListener('click', () => {
+                document.querySelectorAll('.niche-card').forEach(c => c.classList.remove('border-white', 'bg-white/10'));
+                card.classList.add('border-white', 'bg-white/10');
+                selectedNiche = card.dataset.niche;
+            });
+        });
+
+        // Custom Niche
+        document.getElementById('customNiche').addEventListener('input', (e) => {
+            if (e.target.value) selectedNiche = e.target.value.toLowerCase();
+        });
+
+        // Generate Content
+        document.getElementById('generateBtn').addEventListener('click', generateContent);
+
+        function generateContent() {
+            const niche = selectedNiche;
+            const nicheData = templates[niche] || generateCustomContent(niche);
+            
+            generatedContent = Array.from({length: 30}, (_, i) => ({
+                day: i + 1,
+                content: nicheData[i % nicheData.length],
+                visualPrompt: generateVisualPrompt(nicheData[i % nicheData.length]),
+                caption: generateCaption(nicheData[i % nicheData.length], i + 1),
+                hashtags: generateHashtags(niche),
+                predictedEngagement: getEngagementPrediction(i + 1)
+            }));
+
+            displayContent();
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+        }
+
+        function generateCustomContent(niche) {
+            return Array.from({length: 30}, () => ({
+                type: ['tip', 'quote', 'statistic', 'question', 'challenge'][Math.floor(Math.random() * 5)],
+                visual: 'modern graphic design',
+                caption: `${niche} insight #${niche}`
+            }));
+        }
+
+        function generateVisualPrompt(content) {
+            const visuals = [
+                'minimalist flat design',
+                '3D render animation',
+                'neon glow effect',
+                'golden hour aesthetic',
+                'dark mode gradient',
+                'hand-drawn illustration',
+                'typographic masterpiece'
+            ];
+            return `${content.visual} with ${visuals[Math.floor(Math.random() * visuals.length)]}`;
+        }
+
+        function generateCaption(content, day) {
+            const starters = ['Day', 'Week', 'Quick', 'Easy', 'Pro', 'Secret', 'Hidden'];
+            return `${starters[Math.floor(Math.random() * starters.length)]} ${content.type} for ${selectedNiche} 🔥 #Day${day}`;
+        }
+
+        function generateHashtags(niche) {
+            const baseTags = ['faceless', 'contentcreator', 'instagrowth', 'digitalmarketing'];
+            const nicheTags = {
+                motivation: ['mindset', 'success', 'growth'],
+                fitness: ['fitness', 'workout', 'health'],
+                finance: ['finance', 'money', 'wealth']
+            };
+            return [...baseTags, ...(nicheTags[niche] || [niche])].slice(0, 8).join(' ');
+        }
+
+        function getEngagementPrediction(day) {
+            const predictions = ['High 🔥', 'Medium ⚡', 'Viral 🚀', 'Solid 💪', 'Good 👍'];
+            return predictions[Math.floor(Math.random() * predictions.length)];
+        }
+
+        function displayContent() {
+            document.getElementById('calendarTitle').textContent = `${selectedNiche.charAt(0).toUpperCase() + selectedNiche.slice(1)} Domination Plan`;
+            document.getElementById('nicheDisplay').textContent = `#${selectedNiche}`;
+
+            const grid = document.getElementById('daysGrid');
+            grid.innerHTML = generatedContent.map(day => `
+                <div class="glass rounded-2xl p-6 hover:scale-105 transition-all group cursor-pointer">
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-400 to-pink-400 rounded-2xl flex items-center justify-center font-bold text-xl shadow-lg">
+                            ${day.day}
+                        </div>
+                        <span class="bg-green-500 text-xs px-3 py-1 rounded-full font-semibold group-hover:bg-emerald-400 transition-colors">
+                            ${day.predictedEngagement}
+                        </span>
+                    </div>
+                    <h3 class="text-xl font-bold mb-3">${day.content.type.toUpperCase()}</h3>
+                    <p class="text-blue-300 mb-4 font-semibold">${day.visualPrompt}</p>
+                    <p class="text-sm opacity-90 mb-4">${day.caption}</p>
+                    <div class="flex flex-wrap gap-1 mb-4">
+                        <span class="text-xs bg-white/20 px-3 py-1 rounded-full">#Day${day.day}</span>
+                        <span class="text-xs bg-white/20 px-3 py-1 rounded-full">${day.content.type}</span>
+                    </div>
+                    <button class="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-2 px-4 rounded-xl font-semibold hover:scale-102 transition-all text-sm">
+                        Copy Content
+                    </button>
+                </div>
+            `).join('');
+
+            // Add copy functionality to day cards
+            document.querySelectorAll('.glass button').forEach((btn, index) => {
+                btn.addEventListener('click', () => {
+                    navigator.clipboard.writeText(generatedContent[index].caption);
+                    btn.textContent = 'Copied! ✅';
+                    setTimeout(() => btn.textContent = 'Copy Content', 2000);
+                });
+            });
+        }
+
+        // Export Functions
+        document.getElementById('exportPDF').addEventListener('click', exportPDF);
+        document.getElementById('exportCSV').addEventListener('click', exportCSV);
+        document.getElementById('copyAll').addEventListener('click', copyAll);
+
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(20);
+            doc.text(`${selectedNiche} 30-Day Plan`, 20, 20);
+            // Add content...
+            doc.save('faceless-ig-plan.pdf');
+        }
+
+        function exportCSV() {
+            const csv = generatedContent.map(day => 
+                `Day ${day.day},${day.content.type},"${day.caption}","${day.visualPrompt}",${day.hashtags}`
+            ).join('\n');
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'faceless-ig-plan.csv';
+            a.click();
+        }
+
+        function copyAll() {
+            const allContent = generatedContent.map(day => 
+                `Day ${day.day}: ${day.caption}\nVisual: ${day.visualPrompt}\n\n`
+            ).join('');
+            navigator.clipboard.writeText(allContent);
+            alert('All 30 days copied to clipboard! 📋');
+        }
+    </script>
+</body>
+</html>
